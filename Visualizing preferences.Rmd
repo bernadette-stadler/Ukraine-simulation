@@ -15,6 +15,8 @@ library(tidyverse)
 
 data1 <- read_excel("preferences.xlsx") 
 
+# read in data 
+
 ```
 
 ```{r modify data, include = FALSE}
@@ -24,6 +26,9 @@ data2 <- data1 %>%
   select(!...1) %>% clean_names() %>% 
   pivot_longer(ceasefire:local_elections, names_to = "Issue", values_to = "Priority") %>% 
   pivot_wider(id_cols = Issue, names_from = country, values_from = Priority) 
+
+#clean up tibble--rename columns to names that are easy to work with and flip tibble 
+
 ```
 
 
@@ -31,13 +36,23 @@ data2 <- data1 %>%
 datad1 <- data2 %>% 
   filter(Issue %in% c("ceasefire", "smm", "un_pk_force"))
 
+# select just the issues that were discussed on day one of the simulation 
+
 datad1 <- as.data.frame(datad1) %>% select(OSCE:LPR)
+
+# save it as a dataframe 
 
 rownames(datad1) <- c("Ceasefire", "OSCE SMM", "UN Peacekeepers")
 
+# rename the rows 
+
 datad1 <- rbind(rep(5,5) , rep(2,5) , datad1)
 
+# add rows that will specify the limits of the radarchart
+
 colors_border=c("mediumorchid1", "dodgerblue", "blue")
+
+# create a vector of colors to input into radarchart 
 
 png(filename = "day1.png", res = 70, height = 410, width = 676)
 
@@ -52,20 +67,38 @@ dev.off()
 datad2 <- data2 %>% 
   filter(Issue %in% c("constitution", "status_dpr_lpr", "local_elections"))
 
+# select just the issues that were discussed on day two of the simulation 
+
 datad2 <- as.data.frame(datad2) %>% select(OSCE:LPR)
+
+# save it as a dataframe 
 
 rownames(datad2) <- c("Constition", "Status DPR/LPR", "Local Elections")
 
+# rename the rows
+
 datad2 <- rbind(rep(5,5) , rep(2,5) , datad2)
 
+# add rows that will specify the limits of the radarchart
+
 colors_border2=c("red4", "red", "darkorange")
+
+# create a vector of colors to input into radarchart 
 
 png(filename = "day2.png", res = 70, height = 410, width = 676)
 
 radarchart(datad2, pcol = colors_border2, pty = 32, plty =1, plwd=3, cglcol = "black", title = "Day 2", seg = 3)
+
+# create the radarchart, specifying the types of line and points, adding a title 
+
 legend(x= 1.5, y= 1.2, legend = rownames(datad2[-c(1,2),]), bty = "n", pch=20 , col=colors_border2 , text.col = "black", cex=1, pt.cex=2)
 
+# add a legend 
+
 dev.off()
+
+# save it as a png file 
+
 ```
 
 ```{r}
@@ -84,14 +117,16 @@ labels = c("Ceasefire", "OSCE SMM", "UN Peacekeeping Force", "Constitution", "St
 png(filename = "preferences.png", res = 70, height = 410, width = 676)
 
 radarchart(data4, pcol = colors_border, pty = 1, plty =1, plwd=2, cglcol = "black", title = "Intensity of Actor Preferences", seg = 3)
+
+# create radar chart, specifying the types of line and points, adding a title  
+
 legend(x= 1.5, y= 1.2, legend = rownames(data4[-c(1,2),]), bty = "n", pch=20 , col=colors_border , text.col = "black", cex=1, pt.cex=2)
+
+# add a legend
 
 dev.off()
 
-```
-
-```{r}
-
+# save it as a png file 
 
 ```
 
