@@ -12,13 +12,17 @@ library(tidyverse)
 ```
 
 ```{r read in data, include = FALSE}
+
 data1 <- read_excel("preferences.xlsx") 
 
 ```
 
 ```{r modify data, include = FALSE}
 
-data2 <- data1 %>% mutate("Country" = ...1) %>% select(!...1) %>% clean_names() %>% pivot_longer(ceasefire:local_elections, names_to = "Issue", values_to = "Priority") %>% 
+data2 <- data1 %>% 
+  mutate("Country" = ...1) %>% 
+  select(!...1) %>% clean_names() %>% 
+  pivot_longer(ceasefire:local_elections, names_to = "Issue", values_to = "Priority") %>% 
   pivot_wider(id_cols = Issue, names_from = country, values_from = Priority) 
 ```
 
